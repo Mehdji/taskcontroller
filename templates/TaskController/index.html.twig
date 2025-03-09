@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TaskManagerController!{% endblock %}
+
+{% block body %}
+<h1><i class="fa-solid fa-list-check"></i>TaskManager</h1>
+<div class="add-div">
+   {#}
+    <div id="input-form">
+        <form>
+            <label for="input_text">new task</label>
+            <input type="text" name="input_text" class="input_text">
+        </form>
+    </div>
+    #}
+   
+{#templates/TaskController/index.html.twig#}
+ {{ form_start(form, {'attr': {'class': 'form_task'}}) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+{#{{ form(form)}}#}
+<div class="task_list">
+    
+
+</div>
+
+
+{% endblock %}
+
+{#
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TaskManagerController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code>C:/Users/Naoui/Desktop/project/php/symfony/todolist/src/Controller/TaskManagerController.php</code></li>
+        <li>Your template at <code>C:/Users/Naoui/Desktop/project/php/symfony/todolist/templates/task_manager/index.html.twig</code></li>
+    </ul>
+</div>
+{% endblock %}
+#}
