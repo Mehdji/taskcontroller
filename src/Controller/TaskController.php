@@ -21,27 +21,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-
+//---------------------------------------------------
+use Doctrine\ORM\EntityManagerInterface;
 
 class TaskController extends AbstractController
 {
     #[Route("/task/new", name: "task_new")]
-    public function new(Request $request): Response
+    public function new(EntityManagerInterface $entityManager ,Request $request): Response
     {
-        $list_task = [];
+        
         //Creates a task object and initializes some data for this example
         $task = new Task();
-        $task->setTask("");
-        $dueDateIsRequired = true ;
-               
+       
+                    
         //Creating the form using "createForm" .
         //TaskType::Class refere to the form type class that 
         //describe the structure.
         // The ::class syntax is a way to get the 
         // fully qualified class name as a string in PHP
-        $form = $this->createForm(TaskType::class, $task,[
-            'require_due_date'=> $dueDateIsRequired,
-        ]);
+        $form = $this->createForm(TaskType::class, $task);
 
         //Process HTTP request
         //part of form handling process
@@ -61,43 +59,28 @@ class TaskController extends AbstractController
 
 
      
-
-        //CreateFormBuilder method initializes form builder that
-        //construct the form.$Task object is  the data model
-        //that the form will be bound to.
-        /*
-        $form = $this->createFormBuilder($task)
-        //"add" method is used to add fields to the form.
-            ->add("task", TextType::class,['label' => 'Task:'])
-            ->add("dueDate", DateType::class,['label' => 'Due Date:'])
-            ->add('save', SubmitType::class, ['label' => 'Create Task',
-            'attr' => ['class' => 'btn']])
-            ->getForm();
-        */
-
    if($form->isSubmitted() && $form->isValid()){
             //form->getData() holds the submitted values
             //but, the original '$task' variable has also been updated.
             $task = $form->getData();
-            $list_task[] = $task->getTask();
-           
+            
+            //Tell docrine to save the task.
+            $entityManager->persist($task);
+
+            //Executes the queries(i.e. the INSERT query)
+            $entityManager->flush();
             //...perform some action, such as saving the task to the database
           
             // Store the task data in session or flash messages
             // to display it after redirect
-            $this->addFlash('task_added', $task->getTask());
+            
             return $this->redirectToRoute("task_new");
         }
 
-      
-
-            
-
-        
+              
             //Generate HTML twig template with render method.
         return $this->render('TaskController/index.html.twig', [
             'form' => $form,
-            'list_task' => $list_task,
         ]);
     }
 }
