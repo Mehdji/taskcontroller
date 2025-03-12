@@ -29,10 +29,15 @@ class TaskController extends AbstractController
     #[Route("/task/new", name: "task_new")]
     public function new(EntityManagerInterface $entityManager ,Request $request): Response
     {
-        
+        $allTask = $entityManager->getRepository(task::class)->findAll();
+
+        if(!$allTask){
+            throw $this->createNotFoundException('No task found');
+        }
+
         //Creates a task object and initializes some data for this example
         $task = new Task();
-       
+        
                     
         //Creating the form using "createForm" .
         //TaskType::Class refere to the form type class that 
@@ -81,6 +86,7 @@ class TaskController extends AbstractController
             //Generate HTML twig template with render method.
         return $this->render('TaskController/index.html.twig', [
             'form' => $form,
+            'allTask' => $allTask,
         ]);
     }
 }

@@ -15,11 +15,11 @@
 <div class="task_list">
     <ul>
    
-        {#{% for task in list_task %}
-            <li>{{task}}</li>
+        {% for task in allTask %}
+            <li>{{task.getTask}} {{task.getDueDate|date('Y-m-d')}}</li>
             {% else %}
             <li>No tasks found</li>
-        {% endfor %}#}
+        {% endfor %}
     </ul>
 </div>
 
